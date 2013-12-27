@@ -1,10 +1,16 @@
 {
-  "name": "StickPoser",
+  "name": "Visual Learning Center",
   "version": "0.0.1",
-  "private": true,
+  "description": "Stick Poser Website which will become the TFL Lessons website in time.",
   "scripts": {
     "start": "node app.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@heroku.com:visual-learning-center.git"
+  },
+  "author": "Karl Tyson, Mark Earnest",
+  "license": "MIT",
   "dependencies": {
     "express": "3.4.7",
     "jade": "*",
