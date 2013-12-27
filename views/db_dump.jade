@@ -1,0 +1,62 @@
+extends layout
+
+block head
+	//- Need to serialize stick figure data so that it can be used in javascript.
+	- var poserlistStr = JSON.stringify(poserlist)
+	
+	script.
+		var Pose = !{poserlistStr};
+		
+	style.
+		fieldset {
+			margin-top: 10px;
+			padding-left: 10px;
+			border: 1px solid;
+		}
+		
+		#db-dump {
+			margin-top: 20px;
+			padding-left: 10px;
+		}
+		
+		div.part-description {
+			float: left;
+			margin-right: 20px;
+		}
+		
+		div.part-draw {
+			float: left;
+		}
+		
+		hr.part {
+			clear: both;
+		}
+
+block content
+	h1 Poser List
+	
+	for poser, i in poserlist
+		div
+			fieldset
+				legend #{poser.name}
+				for part, i in poser.parts
+					div.part-wrapper
+						div.part-description
+							p <strong>#{part.name}</strong>
+							p drawOrder: #{part.drawOrder}
+							p tension: #{part.tension}
+							if part.drawFromLast.part
+								p drawFromLast: part: #{part.drawFromLast.part}, site: #{part.drawFromLast.site}
+							else
+								p drawFromLast: part: null, site: null
+							p startPoint: [#{part.startPoint}]
+							p midPoint: [#{part.midPoints}]
+							p endPoint: [#{part.endPoint}]
+						div.part-draw
+							//- Draw here
+							div.part-container
+					hr.part
+	
+	div#db-dump
+		p <strong>Raw Dump</strong>
+		p= poserlistStr

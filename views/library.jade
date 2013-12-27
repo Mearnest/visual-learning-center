@@ -1,0 +1,68 @@
+extends layout
+
+block head
+	script(src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.5.min.js")
+	script(src="/javascripts/PoseController.js")
+	script(src="/javascripts/PoseFigure.js")
+	script(src="/javascripts/PosePart.js")
+	
+	style.
+		div.figure {
+			padding: 5px;
+			border: 1px solid;
+			height: 350px;
+			width: 310px;
+			float: left;
+		}
+		
+		h3 {
+			text-align: center;
+		}
+		
+		img.figure {
+			width: 300px;
+			height: 300px;
+		}
+	
+	//- Need to serialize stick figure data so that it can be used in javascript.
+	- var poserlistStr = JSON.stringify(poserlist)
+	
+	script.
+		var Pose = !{poserlistStr};  // Use jade escape to avoid html special characters.
+		var controller; // not used at the moment
+		var figure;
+		var layerParts;
+		var layerPoints;
+		var activePartIndex;
+		var isPart;
+				
+		$(document).ready(function(){
+			var stage = new Kinetic.Stage({
+				container: 'poser-container',
+				width: 600,
+				height: 600
+			});
+
+			layerParts = new Kinetic.Layer();
+			layerPoints = new Kinetic.Layer();
+			stage.add(layerParts);
+			stage.add(layerPoints);		 
+			
+			$.each(Pose, function(idx, pose) {
+				console.log("Drawing " + pose.name);
+				figure = new PoseFigure(pose);
+				figure.Draw(layerParts, layerPoints);	
+				
+				var dataURL = layerParts.toDataURL();
+				$("#library-container").append('<div class="figure"><h3>' + pose.name + '</h3><img class="figure" src="' + dataURL + '"></div>');
+			});
+
+			$("#poser-container").hide();
+		});
+
+block content
+	h1 Library
+	div#poser-container
+	div#library-container
+	p(style="clear:both")
+	

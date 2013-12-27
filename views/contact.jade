@@ -1,0 +1,9 @@
+extends layout
+
+block content		 
+	h1 Contact Us
+	p Send us a message!
+	form.form-contact(action="/contact", method="post")
+		input.form-control(type="text", name="email", placeholder="Email address", required="", autofocus="")
+		textarea.form-control(name="message", placeholder="Your message", required="", rows="6")
+		button(class="btn btn-lg btn-primary btn-block", type="submit") Send

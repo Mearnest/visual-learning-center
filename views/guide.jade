@@ -1,0 +1,43 @@
+extends layout
+
+block head
+	script.
+		$(document).ready(function() {
+			var slide = $('#slide');
+			var slideNum = 1;
+			var lastSlide = 8;
+			var prev = $('img.prev');
+			var next = $('img.next');
+
+			prev.click(function(event) {
+				slideNum = parseInt(slide.attr('data-num')) - 1;
+				slide.attr('data-num', slideNum);
+				slide.attr('src', '/images/Slide' + slideNum + '.gif');
+				if (slideNum == 1) {
+					prev.hide();
+				} else if(slideNum == 7) {
+					next.show();
+				}
+			});
+
+			next.click(function(event) {
+				slideNum = parseInt(slide.attr('data-num')) + 1;
+				slide.attr('data-num', slideNum);
+				slide.attr('src', '/images/Slide' + slideNum + '.gif');
+				if (slideNum == lastSlide) {
+					next.hide();
+				} else if(slideNum == 2) {
+					prev.show();
+				}
+			});
+		}); 
+
+block content
+	h1 Guide
+	p Click the Arrows to navigate through the guide on how to build a make a good figure.
+
+	img#slide(src='/images/Slide1.gif', data-num='1')
+
+	div#guide-controls
+		img.prev(src='/images/back.png')
+		img.next(src='/images/next.png')

@@ -1,0 +1,75 @@
+extends layout
+
+block head
+	meta(name="apple-mobile-web-app-capable", content="yes")
+	
+	link(rel="stylesheet", href="/stylesheets/editor/jPicker.css", type="text/css")
+	link(rel="stylesheet", href="/stylesheets/editor/jgraduate.css", type="text/css")
+	link(rel="stylesheet", href="/stylesheets/editor/svg-editor.css", type="text/css")
+	link(rel="stylesheet", href="/stylesheets/editor/JQuerySpinBtn.css", type="text/css")
+	
+	script(src="/javascripts/editor/jquery.hotkeys.min.js")
+	script(src="/javascripts/editor/jquery.bbq.min.js")
+	script(src="/javascripts/editor/jquery.svgicons.js")
+	script(src="/javascripts/editor/jquery.jgraduate.min.js")
+	script(src="/javascripts/editor/JQuerySpinBtn.min.js")
+	script(src="/javascripts/editor/touch.js")
+	
+	//- This part can be compiled
+	script(src="/javascripts/editor/svgedit.js")
+	script(src="/javascripts/editor/jquery-svg.js")
+	script(src="/javascripts/editor//jquery.contextMenu.js")
+	script(src="/javascripts/editor/browser.js")
+	script(src="/javascripts/editor/svgtransformlist.js")
+	script(src="/javascripts/editor/math.js")
+	script(src="/javascripts/editor/units.js")
+	script(src="/javascripts/editor/svgutils.js")
+	script(src="/javascripts/editor/sanitize.js")
+	script(src="/javascripts/editor/history.js")
+	script(src="/javascripts/editor/coords.js")
+	script(src="/javascripts/editor/recalculate.js")
+	script(src="/javascripts/editor/select.js")
+	script(src="/javascripts/editor/draw.js")
+	script(src="/javascripts/editor/path.js")
+	script(src="/javascripts/editor/svgcanvas.js")
+	script(src="/javascripts/editor/svg-editor.js")
+	script(src="/javascripts/editor/locale.js")
+	script(src="/javascripts/editor/contextmenu.js")
+
+block content
+	#svg_editor
+		#rulers
+			#ruler_corner
+			#ruler_x
+				div
+					canvas(height="15")
+			#ruler_y
+				div
+					canvas(width="15")
+			
+		#workarea
+		style#styleoverrides(type="text/css", media="screen", scoped="scoped")
+		#svgcanvas(style="position:relative")
+		
+	#sidepanels
+		#layerpanel
+			h3#layersLabel Layers
+			fieldset#layerbuttons
+				#layer_new.layer_button(title="New Layer")
+				#layer_delete.layer_button(title="Delete Layer")
+				#layer_rename.layer_button(title="Rename Layer")
+				#layer_up.layer_button(title="Move Layer Up")
+				#layer_down.layer_button(title="Move Layer Down")
+				#layer_moreopts.layer_button(title="More Options")
+				
+			table#layerlist
+				tr.layer
+					td.layervis
+					td.layername Layer 1
+					
+			span#selLayerLabel Move Elements to:
+			select#selLayerNames(title="Move selected elements to a different layer", disabled="disabled")
+				option(selected="selected", value="layer1") Layer 1
+				
+		#sidepanel_handle(title="Drag left/right to resize side panel [X]") L a y e r s
+	
