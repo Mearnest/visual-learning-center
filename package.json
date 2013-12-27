@@ -12,4 +12,7 @@
     "monk": "*",
     "nodemailer": "*"
   }
+  "engines": {
+    "node": "0.10.x"
+  }
 }
