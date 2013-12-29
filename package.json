@@ -1,9 +1,15 @@
 {
-  "name": "StickPoser",
+  "name": "Visual Learning Center",
+  "description": "TFL Lessons and Stick Poser Project",
   "version": "0.0.1",
-  "private": true,
+  "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+	"test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@heroku.com:visual-learning-center.git"
   },
   "dependencies": {
     "express": "3.4.7",
@@ -11,5 +17,10 @@
     "mongodb": "*",
     "monk": "*",
     "nodemailer": "*"
+  },
+  "author": "Karl Tyson, Mark Earnest",
+  "license": "MIT",
+  "engines": {
+    "node": "0.10.24"
   }
 }

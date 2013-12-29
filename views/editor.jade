@@ -73,3 +73,46 @@ block content
 				
 		#sidepanel_handle(title="Drag left/right to resize side panel [X]") L a y e r s
 	
+	#main_button
+		#main_icon(class="tool_button", title="Main Menu")
+			span SVG-Edit
+			#logo
+			div.dropdown
+		
+		#main_menu
+			// File-like buttons: New, Save, Sourc
+			ul
+				li#tool_clear
+					div
+					New Image (N)
+				
+				li#tool_open(style="display:none;")
+					#fileinputs
+						div
+					Open Image
+			
+				li#tool_import(style="display:none;")
+					#fileinputs_import
+						div
+					Import Image
+					
+				li#tool_save
+					div
+					Save Image (S)
+					
+				li#tool_export
+					div
+					Export
+			
+				li#tool_docprops
+					div
+					Document Properties (D)
+			
+			p
+				a(href="http://svg-edit.googlecode.com/", target="_blank").
+					SVG-edit Home Page
+			
+			button#tool_prefs_option
+				
+	
+	
