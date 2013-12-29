@@ -23,18 +23,23 @@ function getPoserCollection(db, template, pageTitle) {
 }
  
  // How to abstract same functionality from index, library and database dump?
-exports.index = function(db) {
-	var template = 'index';
-	var pageTitle = 'Stick Poser';
-	
-	return getPoserCollection(db, template, pageTitle);
+exports.index = function(poser) {
+	return function(req, res) {
+		res.render('index', {
+			title: 'Stick Poser Project',
+			poserlist: poser.getPoses(),
+		});
+	}
 };
 
-exports.dbDump = function(db) {
-	var template = 'db_dump';
-	var pageTitle = 'Database Dump';
-	
-	return getPoserCollection(db, template, pageTitle);
+exports.database = function(poser) {
+	return function(req, res) {
+		res.render('database', {
+			title: 'Stick Poser Database',
+			poserlist: poser.getPoses(),
+			dbType: poser.getDbType(),
+		});
+	}
 };
 
 exports.guide = function(req, res) {
@@ -49,19 +54,20 @@ exports.about = function(req, res) {
 	res.render('about', { title: 'About' });
 };
 
-exports.library = function(db) {
-	var template = 'library';
-	var pageTitle = 'Library';
-	
-	return getPoserCollection(db, template, pageTitle);
+exports.library = function(poser) {
+	return function(req, res) {
+		res.render('library', {
+			title: 'Stick Poser Library',
+			poserlist: poser.getPoses(),
+		});
+	}
 };
 
-exports.addToLibrary = function(db) {
+exports.addToLibrary = function(poser) {
 	return function(req, res) {
 		var stickFigure = req.body.stickFigure;
-		var collection = db.get('stickPoserCollection');
 
-		// Submit to the DB
+		// Submit to the poser
 		collection.insert(stickFigure, function (err, doc) {
 			if(err) {
 				// If it failed, return error
@@ -72,7 +78,7 @@ exports.addToLibrary = function(db) {
 			}
 			else {
 				// If it worked, return success message and updated stick figure list
-				collection = db.get('stickPoserCollection');
+				collection = poser.get('stickPoserCollection');
 				collection.find({},{},function(e,docs){
 					res.send({
 						error: false,

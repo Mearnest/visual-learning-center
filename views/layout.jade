@@ -24,11 +24,10 @@ html
 				var path = window.location.pathname;
 				path = path.replace(/\/$/, "");
 				path = decodeURIComponent(path);
-
-					
+				
 				$("ul.nav a").each(function () {
 					var href = $(this).attr('href');
-					if (path === href || (path == "" && href == "/")) {
+					if (path === href || (path == '' && href == '/')) {
 						$(this).parent().addClass('active');
 						return false;
 					}
@@ -61,7 +60,7 @@ html
 							li
 								a(href="/editor") Editor
 							li
-								a(href="/db-dump") Database
+								a(href="/database") Database
 							li
 								a(href="/about") About
 							li
@@ -75,6 +74,4 @@ html
 		block footer
 			div.container
 				p(class="text-muted credit")
-					| Stick Poser is a 
-					a(href="http://www.treesforlife.org") Treesforlife.org 
-					| project.
+					Stick Poser is a <a href="http://www.treesforlife.org">Treesforlife.org</a> project.

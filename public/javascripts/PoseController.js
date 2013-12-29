@@ -142,19 +142,19 @@ var PoseController = (function() {
 				}, 500);
 			});
 	
-			$(".btnRound").on("click", function(){
+			$(".btnRound").on("click", function() {
 				var tens = $(this).val();
 
 				figure.GetParts()[activePartIndex].SetTension(parseFloat(tens));
 			});
 	
-			$(".btnNumMid").on("click", function(){
+			$(".btnNumMid").on("click", function() {
 				var num = $(this).val();
 
 				figure.GetParts()[activePartIndex].SetNumMidPts(parseInt(num), layerPoints);
 			}); 
 						
-			$("#exportImage").on("click", function(){
+			$("#exportImage").on("click", function() {
 				var dataURL = layerParts.toDataURL();
 				
 				$("#exportedImageDiv").show();
@@ -164,7 +164,7 @@ var PoseController = (function() {
 				$("body").scrollTo("#exportedImage");
 			});	
 			
-			$("#saveToLibrary").on("click", function(){
+			$("#saveToLibrary").on("click", function(event) {
 				event.preventDefault();
 				
 				var stickFigure = null;
@@ -174,7 +174,7 @@ var PoseController = (function() {
 					stickFigure = figure.Write(name);
 					// console.log(stickFigure);
 					
-					$.post("/library", {"stickFigure": stickFigure}, function( data ) {
+					$.post("/library", {"stickFigure": stickFigure}, function(data) {
 						if (data.error) {
 							$("#saveToLibraryMsg").html('<h3 class="error">' + data.message + '</h3>');
 						}
@@ -184,7 +184,6 @@ var PoseController = (function() {
 							Pose = data.poserList;
 							$("#saveToLibraryMsg").html('<h3>' + data.message + '</h3>');
 							
-							// Should this be abstracted to a method ?
 							$("#poses").empty();	// clear all values first
 							$.each(Pose, function(idx, pose){
 								// console.log(pose);
@@ -209,8 +208,25 @@ var PoseController = (function() {
 				}
 			});	
 	
-			$("#poses").on("change", function(){
-				figure = new PoseFigure(Pose[this.value]);
+			$('#poses').on('change', function(){
+				if ($('option:selected', $(this)).text() == "Current") {
+					// Get the currently stored stick pose
+					if (controller) {
+						figure = controller.getStickPose();
+					}
+					else if (sessionStorage && sessionStorage.stickPose) {
+						var storedPose = JSON.parse(sessionStorage.stickPose);
+						figure = new PoseFigure(storedPose);
+					}
+					// Otherwise, the stored stick pose got deleted, so go with the first one.
+					else {
+						figure = new PoseFigure(Pose[0]);
+					}
+				}
+				else {
+					figure = new PoseFigure(Pose[this.value]);
+				}
+				
 				figure.Draw(layerParts, layerPoints);	
 			});
 		};
@@ -240,7 +256,7 @@ var PoseController = (function() {
 		// Retrieve the user's working stick figure if it exists
 		this.getStickPose = function() {
 			if (typeof(Storage) !== "undefined") {
-				var storedPose = sessionStorage.stickPose;
+				var storedPose;
 				var newPose;	// the PoseFigue to be created from session storage or the default Pose
 				
 				// Make sure there is a stick pose object

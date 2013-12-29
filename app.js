@@ -3,15 +3,12 @@
  */
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');	// Not being used as of yet
-var contact = require('./routes/contact');
 var http = require('http');
 var path = require('path');
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk('localhost:27017/stickposer');
-
+var routes = require('./routes');
+var contact = require('./routes/contact');
+var Poser = require('./Poser.js').Poser;
+var poser = new Poser();
 var app = express();
 
 // all environments
@@ -25,29 +22,32 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
-app.use(app.router);
+app.use(express.bodyParser()); 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
 	app.use(express.errorHandler());
 }
 
-app.get('/', routes.index(db));
+// Routes
+app.get('/', routes.index(poser));
 app.get('/guide', routes.guide);
 
-app.get('/library', routes.library(db));
-app.post('/library', routes.addToLibrary(db));
+app.get('/library', routes.library(poser));
+app.post('/library', poser.savePose);
 
 app.get('/editor', routes.editor);
 app.get('/about', routes.about);
-app.get('/db-dump', routes.dbDump(db));
-app.get('/users', user.list); // not being used yet
+
+// This is for a database dump / inspection
+app.get('/database', routes.database(poser));
 
 app.get('/contact', contact.view);
 app.get('/contact/sent', contact.sent);
 app.post('/contact', contact.email);
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function() {
 	console.log('Express server listening on port ' + app.get('port'));
 });

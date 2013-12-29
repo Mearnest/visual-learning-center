@@ -1,3 +1,34 @@
+var Poser = function(db) {
+	var filePoses = Pose;  // Flat file Poses (backup if db not available)
+	var poses = null;
+	var collection = db.get('stickPoserCollection');
+	
+	this.fetchPoses = function() {
+		return poses;
+	}
+	
+	// Database poses
+	this.getPoses = function() {
+		collection.find({}, {}, function(error, docs) {
+			if (error) {
+				console.log(error.message);
+				poses = filePoses;
+				return filePoses;
+			} else {
+				docs.sort(function(a, b) {
+					if(a.name < b.name) return -1;
+					if(a.name > b.name) return 1;
+					return 0;
+				});
+			
+				poses = docs;
+				return docs;
+			}
+		});
+	}
+}
+exports.Poser = Poser;
+
 var Pose = {};
 
 Pose["BASE"] = {

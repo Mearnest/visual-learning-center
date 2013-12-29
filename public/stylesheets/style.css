@@ -7,12 +7,12 @@ a {
 	color: #00B7FF;
 }
 
-.form-contact {
-		width: 400px;
+p.lead {
+	max-width: 800px;
 }
 
 #downloadCtl{
-		margin-top: 20px;
+	margin-top: 20px;
 }
 
 .poser-export{
@@ -69,6 +69,11 @@ a {
 	cursor: pointer;
 	float: right;
 }
+
+.form-contact {
+	width: 400px;
+}
+
 
 /* Sticky footer styles
 -------------------------------------------------- */
