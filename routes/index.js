@@ -47,7 +47,12 @@ exports.guide = function(req, res) {
 };
 
 exports.editor = function(req, res) {
-	res.render('editor', { title: 'SVG Editor' });
+	res.render('editor', { title: 'Editor' });
+};
+
+// Goes into an iframe in the editor page
+exports.svgEditor = function(req, res) {
+	res.render('svg-edit', { title: 'SVG Editor' });
 };
 
 exports.about = function(req, res) {

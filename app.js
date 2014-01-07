@@ -39,12 +39,13 @@ app.get('/library', routes.library(poser));
 app.post('/library', poser.savePose);
 
 app.get('/editor', routes.editor);
+app.get('/svg-edit', routes.svgEditor);
 app.get('/about', routes.about);
 
 // This is for a database dump / inspection
 app.get('/database', routes.database(poser));
 
-app.get('/contact', contact.view);
+app.get('/contact', contact.view(poser));
 app.get('/contact/sent', contact.sent);
 app.post('/contact', contact.email);
 

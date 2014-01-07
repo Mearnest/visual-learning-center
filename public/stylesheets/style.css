@@ -96,7 +96,7 @@ body {
 
 /* Set the fixed height of the footer here */
 #footer {
-	margin-top: 20px;
+	margin-top: -40px;
 	height: 60px;
 	background: #f5f5f5 url('/images/tfl-logo.png') no-repeat center; 
 }

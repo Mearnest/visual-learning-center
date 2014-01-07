@@ -16,7 +16,7 @@ block head
 		// Fetch a stick pose by it's name. Should go somewhere better.
 		Pose.find = function(name) {
 			for (var i = 0; i < this.length; i++) {
-				if(this[i].name == name) {
+				if (this[i].name == name) {
 					return this[i];
 				}
 			}
@@ -34,7 +34,7 @@ block head
 						
 			// ScrollTo plugin
 			$.fn.scrollTo = function( target, options, callback ){
-				if(typeof options == 'function' && arguments.length == 2) { 
+				if (typeof options == 'function' && arguments.length == 2) { 
 					callback = options; options = target; 
 				}
 				var settings = $.extend({

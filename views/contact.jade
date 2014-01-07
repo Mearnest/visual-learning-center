@@ -1,9 +1,37 @@
 extends layout
 
+block head
+	style.
+		#poser-containerx {
+			display: none;
+		}
+		
+	script(src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.5.min.js")
+	script(src="/javascripts/PoseController.js")
+	script(src="/javascripts/PoseFigure.js")
+	script(src="/javascripts/PosePart.js")
+	
+	//- Need to serialize stick figure data so that it can be used in javascript.
+	- var poserlistStr = JSON.stringify(poserlist)
+	
+	script.
+		var Pose = !{poserlistStr};  // Use jade escape to avoid html special characters.
+		var controller;
+		
+		$(document).ready(function() {
+			controller = new PoseController();
+			controller.initializeStage();
+			$("#stick-pose").val(controller.getDataURL());
+		});
+
 block content
 	h1 Contact Us
 	p Send us a message!
 	form.form-contact(action="/contact", method="post")
+		input#stick-pose.form-control(type="text", name="stickpose")
 		input.form-control(type="text", name="email", placeholder="Email address", required="", autofocus="")
 		textarea.form-control(name="message", placeholder="Your message", required="", rows="6")
 		button(class="btn btn-lg btn-primary btn-block", type="submit") Send
+		
+	div#poser-container
+	div#controlpanel

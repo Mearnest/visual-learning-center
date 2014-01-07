@@ -1,15 +1,9 @@
 {
-  "name": "Visual Learning Center",
+  "name": "visual-learning-center",
   "description": "TFL Lessons and Stick Poser Project",
   "version": "0.0.1",
-  "main": "app.js",
   "scripts": {
     "start": "node app.js",
-	"test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@heroku.com:visual-learning-center.git"
   },
   "dependencies": {
     "express": "3.4.7",

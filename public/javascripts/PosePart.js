@@ -198,7 +198,7 @@ var PosePart = (function() {
 						//the part has a start, is not in motion, and has a diff							
 						//console.log(name, "got here", diffToDraw.toString());
 						//transpose the midPts
-						for(var i = 0; i < midPoints.length; i++) {
+						for (var i = 0; i < midPoints.length; i++) {
 							var pt = midPoints[i];
 							pt[0] = pt[0] - diffToDraw[0];
 							pt[1] = pt[1] - diffToDraw[1];

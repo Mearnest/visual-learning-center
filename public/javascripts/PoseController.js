@@ -75,10 +75,10 @@ var PoseController = (function() {
 		this.makeSaveControls = function() {
 			var c=[];	
 			
-			// c.push("<br/>Get Pose File Text:"); 
-			// c.push("<input type='button' id='getFile' value='Get File'></input> ");
-			// c.push("<br/><textarea id='writeFile'></textarea> ");
-			// c.push("<br/>Note: Copy and Paste code into PoseFile.js.");
+			c.push("<br/>Get Pose File Text:"); 
+			c.push("<input type='button' id='getFile' value='Get File'></input> ");
+			c.push("<br/><textarea id='writeFile'></textarea> ");
+			c.push("<br/>Note: Copy and Paste code into PoseFile.js.");
 			
 			return c.join('');
 		};
@@ -91,28 +91,31 @@ var PoseController = (function() {
 				c.push("<div id='tensionCtl' class='pose_controller_sub'>" + this.makeTensionSelector() + "</div>");
 				c.push("<div id='numPointsCtl' class='pose_controller_sub'>" + this.makeNumberPointsSelector() + "</div>");
 				c.push("<div id='downloadCtl' class='pose_controller_sub'>" + this.makeDownloadControls() + "</div>");
-				c.push("<div id='saveCtl' class='pose_controller_sub'>" + this.makeSaveControls() + "</div>");
+				// c.push("<div id='saveCtl' class='pose_controller_sub'>" + this.makeSaveControls() + "</div>");
 			c.push("</div>");		
 		
 			return c.join("");		
 		};
 		
-		this.initializeEvents = function() {
+		this.initializeStage = function(w, h) {
 			stage = new Kinetic.Stage({
 				container: 'poser-container',
-				width: 600,
-				height: 600
+				width: w || 600,
+				height: h || 600,
 			});
 
 			layerParts = new Kinetic.Layer();
 			layerPoints = new Kinetic.Layer();
 			stage.add(layerParts);
-			stage.add(layerPoints);			
+			stage.add(layerPoints);
 			
-			// figure = new PoseFigure(Pose["BASE"]);
-			
-			figure = this.getStickPose();	// Either the default figure from database or user's figure stored in the browser session.
+			// Either the default figure from database or user's figure stored in the browser session.
+			figure = this.getStickPose();	
 			figure.Draw(layerParts, layerPoints);
+		}
+		
+		this.initializeEvents = function() {
+			this.initializeStage();
 			
 			$.each(Pose, function(idx, pose){
 				// console.log(pose);
@@ -199,7 +202,7 @@ var PoseController = (function() {
 				}
 			});	
 	
-			$("#getFile").on("click", function(){
+			$("#getFile").on("click", function() {
 				var txt = "";
 				var name = prompt("Enter Name");
 				if (name) {
@@ -208,7 +211,7 @@ var PoseController = (function() {
 				}
 			});	
 	
-			$('#poses').on('change', function(){
+			$('#poses').on('change', function() {
 				if ($('option:selected', $(this)).text() == "Current") {
 					// Get the currently stored stick pose
 					if (controller) {
@@ -235,13 +238,18 @@ var PoseController = (function() {
 			figure.Draw(layerParts, layerPoints, diffInMotion, currentPartName);
 		};
 		
-		this.setActivePart = function(part_idx){
+		this.setActivePart = function(part_idx) {
 			activePartIndex = part_idx;
 			isPart = true;
 		};
 		
-		this.getActivePartIndex = function(){
+		this.getActivePartIndex = function() {
 			return activePartIndex;
+		};
+		
+		// Sometimes need to get the figure's image url.
+		this.getDataURL = function() {
+			return layerParts.toDataURL();
 		};
 		
 		// Store the current user's stick figure in the browser session
@@ -250,8 +258,8 @@ var PoseController = (function() {
 				var storedPose = figure.Write();
 				storedPose.name = "Current";
 				sessionStorage.stickPose = JSON.stringify(storedPose);
-			};
-		}
+			}
+		};
 		
 		// Retrieve the user's working stick figure if it exists
 		this.getStickPose = function() {
@@ -302,15 +310,15 @@ PoseController.prototype = {
 		this.initializeEvents();
 	},
 	
-	SetActivePart: function(part_idx){
+	SetActivePart: function(part_idx) {
 		this.setActivePart(part_idx);
 	},
 	
-	RedrawFigure: function(diffInMotion, currentPartName){
+	RedrawFigure: function(diffInMotion, currentPartName) {
 		this.redrawFigure(diffInMotion, currentPartName);
 	},
 	
-	GetActivePartIndex: function(){
+	GetActivePartIndex: function() {
 		return this.getActivePartIndex();
 	}
 };
