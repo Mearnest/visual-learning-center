@@ -9,11 +9,10 @@
 }
 
 #poser-container{
-	border:solid 1px #ccc;
+	border: solid 1px #ccc;
 	margin-top: 10px;
-	width:600px;
-	height:600px;
-	xxfloat:left;
+	width: 600px;
+	height: 600px;
 }
 
 #exportedImageDiv{

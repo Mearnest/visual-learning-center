@@ -5,7 +5,7 @@
 var nodemailer = require("nodemailer");
 
 // create reusable transport method (opens pool of SMTP connections)
-var smtpTransport = nodemailer.createTransport("SMTP",{
+var smtpTransport = nodemailer.createTransport("SMTP", {
 	service: "Gmail",
 	auth: {
 		user: "mark@treesforlife.org",
@@ -15,7 +15,7 @@ var smtpTransport = nodemailer.createTransport("SMTP",{
 
 // setup e-mail data with unicode symbols
 var mailOptions = {
-		from: "Mark Earnest ✔ <mark@treesforlife.org>", // sender address
+		from: "Mark Earnest <mark@treesforlife.org>", // sender address
 		to: "", // list of receivers
 		subject: "Stick Poser Project ✔", // Subject line
 		text: "", // plaintext body
@@ -42,14 +42,15 @@ exports.email =	function(req, res) {
 	var message = req.body.message;
 	var stickpose = req.body.stickpose;
 	var base64Data = stickpose.replace(/^data:image\/png;base64,/,"");
-
-	require("fs").writeFile("_tmp/stickpose.png", base64Data, 'base64', function(err) {
+	var filepath = "public/images/poses/stickpose.png";
+	
+	require("fs").writeFile(filepath, base64Data, 'base64', function(err) {
 	  console.log(err);
 	});
 	
 	mailOptions["to"] = email;
 	mailOptions["text"] = message;
-	mailOptions["html"] = message + '<p>' + stickpose + '</p><p><img alt="Embedded Image" height="128" width="128" src="' + stickpose + '"></p>';
+	mailOptions["html"] = message + '<p>' + stickpose + '</p><p><img src="' + stickpose + '"></p>';
 	
 	smtpTransport.sendMail(mailOptions, function(error, response) {
 		if (error) {

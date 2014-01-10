@@ -2,7 +2,7 @@ extends layout
 
 block head
 	style.
-		#poser-containerx {
+		#poser-container {
 			display: none;
 		}
 		
@@ -28,10 +28,9 @@ block content
 	h1 Contact Us
 	p Send us a message!
 	form.form-contact(action="/contact", method="post")
-		input#stick-pose.form-control(type="text", name="stickpose")
+		input#stick-pose.form-control(type="hidden", name="stickpose")
 		input.form-control(type="text", name="email", placeholder="Email address", required="", autofocus="")
 		textarea.form-control(name="message", placeholder="Your message", required="", rows="6")
 		button(class="btn btn-lg btn-primary btn-block", type="submit") Send
 		
 	div#poser-container
-	div#controlpanel

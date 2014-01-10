@@ -12,48 +12,10 @@ block head
 	script.
 		var Pose = !{poserlistStr};  // Use jade escape to avoid html special characters.
 		var controller;
-		
-		// Fetch a stick pose by it's name. Should go somewhere better.
-		Pose.find = function(name) {
-			for (var i = 0; i < this.length; i++) {
-				if (this[i].name == name) {
-					return this[i];
-				}
-			}
-			return null;
-		}
 				
 		$(document).ready(function() {
 			controller = new PoseController();
 			controller.Build('controlpanel');
-			
-			// When user is leaving the page, save their current work
-			$(window).unload(function() {
-				controller.storeStickPose();
-			});
-						
-			// ScrollTo plugin
-			$.fn.scrollTo = function( target, options, callback ){
-				if (typeof options == 'function' && arguments.length == 2) { 
-					callback = options; options = target; 
-				}
-				var settings = $.extend({
-						scrollTarget	: target,
-						offsetTop		 : 50,
-						duration			: 500,
-						easing			: 'swing'
-				}, options);
-				return this.each(function(){
-					var scrollPane = $(this);
-					var scrollTarget = (typeof settings.scrollTarget == "number") ? settings.scrollTarget : $(settings.scrollTarget);
-					var scrollY = (typeof scrollTarget == "number") ? scrollTarget : scrollTarget.offset().top + scrollPane.scrollTop() - parseInt(settings.offsetTop);
-					scrollPane.animate({scrollTop : scrollY }, parseInt(settings.duration), settings.easing, function() {
-						if (typeof callback == 'function') { 
-							callback.call(this); 
-						}
-					});
-				});
-			}
 		});
 
 block content		 
@@ -62,5 +24,6 @@ block content
 		Stick figures have the power to help make your point more clearer.
 		Use the composer to create your own characters. Go through the instructions for a quick guide.
 	
-	div#poser-container
-	div#controlpanel
+	div#poser-wrapper
+		div#poser-container
+		div#controlpanel

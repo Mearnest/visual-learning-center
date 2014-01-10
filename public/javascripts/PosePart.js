@@ -1,8 +1,10 @@
-//prototype class pattern
+// prototype class pattern
 var PosePart = (function() {
-	//private static attributes
-	var m = PoseFigure.ScaleFactor(); //scale multiplier
-	var o = PoseFigure.OffsetX(); //offset
+	// private static attributes
+	var m = PoseFigure.ScaleFactor(); // scale multiplier
+	var o = PoseFigure.OffsetX(); // offset
+	var strokeColor = PoseFigure.StrokeColor();
+	var isTouch = 'ontouchstart' in document.documentElement;
 
 	//private static methods
 	function checkThisOut(someVar) {
@@ -23,7 +25,24 @@ var PosePart = (function() {
 		var diffInMotion;	
 
 		//privileged methods
-		this.write = function() {
+		this.write = function(toJSON) {
+			if (false) {  // Adjust Y offset
+				var yOffset = 0.4;
+				startPoint[1] = startPoint[1] + yOffset;
+				endPoint[1] = endPoint[1] + yOffset;
+				for (var i=0; i< midPoints.length; i++) {
+					midPoints[i][1] = midPoints[i][1] + yOffset;
+				}
+			}
+			if (false) {  // Adjust X offset
+				var xOffset = 0.2;
+				startPoint[0] = startPoint[0] + xOffset;
+				endPoint[0] = endPoint[0] + xOffset;
+				for (var i=0; i< midPoints.length; i++) {
+					midPoints[i][0] = midPoints[i][0] + xOffset;
+				}
+			}
+					
 			var j = {};
 			j.drawOrder = drawOrder;
 			j.drawFromLast = drawFromLast;
@@ -34,8 +53,11 @@ var PosePart = (function() {
 			j.numMidPoints = numMidPts;
 			j.tension = tension;
 			
-			return j;
-			// return JSON.stringify(j);		
+			if (toJSON) {
+				return JSON.stringify(j);
+			} else {
+				return j;
+			}
 		};
 		
 		this.getXformedPointArray = function() {
@@ -86,65 +108,47 @@ var PosePart = (function() {
 		};
 		
 		this.drawPoint = function(layerPoint, x, y, color) {
-			// touchscreen needs larger circles to target
-			var isTouch = 'ontouchstart' in document.documentElement;
-			
+			var container = controller.GetContainer();  // for setting cursor on mouse/touch events
 			var obj = {
 				x: x,
 				y: y,		
-				radius: (isTouch == true ? 20 : 5),
+				radius: (isTouch == true ? 20 : 5),  // touchscreens need larger circles
 				fill: color,
 				stroke: 'red',
 				strokeWidth: 1,
-				draggable:true
+				draggable: true
 			};
 			
 			var point = new Kinetic.Circle(obj);
-			var me = this; //for events 'this' wont work			
+			var me = this; // for events 'this' wont work			
 			
-			point.on("dragmove touchmove", function() {
+			point.on('dragmove touchmove', function() {
 				if (this.index == 0) {
 					this.setDraggable(false);
-				}
-				
-				var container = this.parent.parent.attrs.container;
-				$(container).css("cursor", "move");
-
-				//do not move if part is the main anchor of the figure
-				if (this.index > 0) {
+				} else {
+					$(container).css('cursor', 'move');
 					if (me.resetMidPoints(this.index, this.getX(), this.getY())) {
-						//console.log("drag redraw");	
 						me.TriggerRedraw(diffInMotion);
 					}
 				}
 			});
 			
-			point.on("dragend touchend", function() {
-				var container = this.parent.parent.attrs.container;
-				$(container).css("cursor", "default");
+			point.on('dragend touchend', function() {
+				$(container).css('cursor', 'default');
 				
 				if (this.index > 0) {
 					if (me.resetMidPoints(this.index, this.getX(), this.getY())) {
-						//console.log("end drag");	
 						me.TriggerRedraw(diffInMotion);
 					}
 				}
 			});
 
-			point.on("mouseover", function() {
-				var container = point.parent.parent.attrs.container;
-				$(container).css("cursor", "move");
+			point.on('mouseover', function() {
+				$(container).css('cursor', 'move');
 			});
 			
-			point.on("mouseout", function() {
-				// hpsmart touchscreen sometimes triggers a mouseout error when using it as a touch device
-				try {
-					var container = point.parent.parent.attrs.container;
-					$(container).css("cursor", "default");
-				}
-				catch(err) {
-					// just want to avoid printing errors to the console
-				}
+			point.on('mouseout', function() {
+				$(container).css('cursor', 'default');
 			});				
 			
 			layerPoint.add(point);
@@ -172,7 +176,7 @@ var PosePart = (function() {
 				}
 			}
 			
-			//set endpoint
+			// set endpoint
 			diffInMotion = null;
 			if (myIndex != 0) {
 				//must be end point, because start point is 0
@@ -187,7 +191,7 @@ var PosePart = (function() {
 				return true;
 			}
 			
-			//console.log("new mids", refX, refY);
+			// console.log("new mids", refX, refY);
 		}
 		
 		this.drawPart = function(layerPart, layerPoint, startPointFromLast, diffToDraw) {
@@ -195,9 +199,9 @@ var PosePart = (function() {
 			if (startPointFromLast) {
 				if (diffToDraw) {
 					if (PoseFigure.IsInDrawChain(drawIdx)) {
-						//the part has a start, is not in motion, and has a diff							
-						//console.log(name, "got here", diffToDraw.toString());
-						//transpose the midPts
+						// the part has a start, is not in motion, and has a diff							
+						// console.log(name, "got here", diffToDraw.toString());
+						// transpose the midPts
 						for (var i = 0; i < midPoints.length; i++) {
 							var pt = midPoints[i];
 							pt[0] = pt[0] - diffToDraw[0];
@@ -214,12 +218,10 @@ var PosePart = (function() {
 				startPoint = startPointFromLast;
 			}
 			
-			// touchscreen needs thicker lines to target
-			var isTouch = 'ontouchstart' in document.documentElement;
-
+			var container = controller.GetContainer();
 			var obj = {
 				points: this.getXformedPointArray(),
-				stroke: 'black',
+				stroke: strokeColor,
 				tension: tension,
 				strokeWidth: (isTouch == true ? 24 : 10),
 				lineCap:"round",
@@ -231,19 +233,11 @@ var PosePart = (function() {
 			var me = this; //for events 'this' wont work
 			
 			spline.on("mouseover", function() {
-				var container = spline.parent.parent.attrs.container;
 				$(container).css("cursor", "pointer");
 			});
 			
 			spline.on("mouseout", function() {
-				// hpsmart touchscreen sometimes triggers a mouseout error when using it as a touch device
-				try {
-					var container = spline.parent.parent.attrs.container;
-					$(container).css("cursor", "default");
-				}
-				catch(err) {
-					// just want to avoid printing errors to the console
-				}
+				$(container).css("cursor", "default");
 			});
 			
 			spline.on("click touchstart", function(event) {
@@ -257,6 +251,7 @@ var PosePart = (function() {
 			//console.log(name + " drawIdx set to " + drawIdx);
 		};
 		
+		// layerPoint isn't used, why is it a paramater?
 		this.insertMidPoints = function(numMidPts, layerPoint) {
 			//console.log("old midpts", midPoints.toString());	
 			//clear midPoints
@@ -359,8 +354,25 @@ var PosePart = (function() {
 			this.TriggerRedraw();
 			//console.log(name,"new num", numMidPts);			
 		};
+		
+		this.setScaleFactor = function(val) {
+			m = val;
+		}
+		
+		this.getScaleFactor = function() {
+			return m;
+		}
+		
+		this.setStrokeColor = function(val) {
+			strokeColor = val;
+		}
+		
+		this.getStrokeColor = function() {
+			return strokeColor;
+		}
 
 		//constructor code
+		// why not set private vars to passed in params when they are defined?
 		partIdx = idx;
 		name = configPart.name;
 		
@@ -371,8 +383,9 @@ var PosePart = (function() {
 		drawFromLast = configPart.drawFromLast;
 
 		tension = configPart.tension;
-		numMidPts = configPart.numMidPts;
+		numMidPts = configPart.numMidPts;  // Incorrect - configPart.numMidPoints
 		
+		// Is there eer a case when midPoints is an empty array?
 		if (configPart.midPoints.length == 0) {
 			this.insertMidPoints(numMidPts);
 		} else {
@@ -387,35 +400,51 @@ var PosePart = (function() {
 // 
 // };
 
-//public nonprivileged methods
+// public nonprivileged methods
 PosePart.prototype = {
 	Draw: function(layerPart, layerPoint, startPointFromLast, diffToDraw) {
-	//console.log("drawing " + this.getName());
+		// console.log("drawing " + this.getName());
 		this.drawPart(layerPart, layerPoint, startPointFromLast, diffToDraw);
-	},	
+	},
+	
+	Scale: function() {
+		this.setScaleFactor(PoseFigure.ScaleFactor());
+	},
+	
+	Color: function() {
+		this.setStrokeColor(PoseFigure.StrokeColor());
+	},
+	
 	TriggerRedraw: function(diffInMotion) {		
 		controller.RedrawFigure(diffInMotion);
-	},	
+	},
+	
 	TriggerPartChange: function(idx) {	
 		controller.SetActivePart(idx);
-	},	
+	},
+	
 	GetDrawFromLast: function(callback) {
 		return this.getDrawFromLast();
 		callback();
-	},	
+	},
+	
 	GetNextStartPoint: function(which) {		
 		return this.getNextStartPoint(which);
-	},	
+	},
+	
 	GetName: function() {
 		return this.getName();
-	},	
+	},
+	
 	SetTension: function(val) {
 		this.setTension(val);
 	},
+	
 	SetNumMidPts: function(val, layerPoint) {
 		this.setNumMidPts(val, layerPoint);
-	},	
-	Write: function() {
-		return this.write();
+	},
+	
+	Write: function(toJSON) {
+		return this.write(toJSON);
 	}	
 };

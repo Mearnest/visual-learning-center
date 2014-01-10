@@ -59,6 +59,10 @@ exports.about = function(req, res) {
 	res.render('about', { title: 'About' });
 };
 
+exports.forum = function(req, res) {
+	res.render('forum', { title: 'Forum' });
+};
+
 exports.library = function(poser) {
 	return function(req, res) {
 		res.render('library', {

@@ -41,11 +41,12 @@ app.post('/library', poser.savePose);
 app.get('/editor', routes.editor);
 app.get('/svg-edit', routes.svgEditor);
 app.get('/about', routes.about);
+app.get('/forum', routes.forum);
 
 // This is for a database dump / inspection
 app.get('/database', routes.database(poser));
 
-app.get('/contact', contact.view(poser));
+app.get('/contact', contact.view);
 app.get('/contact/sent', contact.sent);
 app.post('/contact', contact.email);
 

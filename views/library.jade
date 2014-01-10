@@ -33,25 +33,18 @@ block head
 		var figure;
 		var layerParts;
 		var layerPoints;
-		var activePartIndex;
-		var isPart;
 				
 		$(document).ready(function(){
-			var stage = new Kinetic.Stage({
-				container: 'poser-container',
-				width: 600,
-				height: 600
-			});
-
-			layerParts = new Kinetic.Layer();
-			layerPoints = new Kinetic.Layer();
-			stage.add(layerParts);
-			stage.add(layerPoints);
+			controller = new PoseController();
+			controller.Build('controlpanel');
+			
+			figure = controller.getFigure();
+			layerParts = controller.getLayerParts();	 
 			
 			$.each(Pose, function(idx, pose) {
 				console.log("Drawing " + pose.name);
 				figure = new PoseFigure(pose);
-				figure.Draw(layerParts, layerPoints);	
+				figure.Draw(layerParts, layerParts);	
 				
 				var dataURL = layerParts.toDataURL();
 				$("#library-container").append('<div class="figure"><h3>' + pose.name + '</h3><img class="figure" src="' + dataURL + '"></div>');

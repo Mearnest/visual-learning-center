@@ -11,49 +11,90 @@ p.lead {
 	max-width: 800px;
 }
 
-#downloadCtl{
-	margin-top: 20px;
+#poser-wrapper {
+	position: relative;
 }
 
-.poser-export{
-	-webkit-box-shadow:rgba(0,0,0,0.0.1) 0 1px 0 0;
-	-moz-box-shadow:rgba(0,0,0,0.0.1) 0 1px 0 0;
-	box-shadow:rgba(0,0,0,0.0.1) 0 1px 0 0;
-	background-color:#5B74A8;
-	border:1px solid #29447E;
-	font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
-	font-size:16px;
-	font-weight:700;
-	padding:4px 6px;
-	height:28px;
-	color:#fff;
-	border-radius:5px;
-	-moz-border-radius:5px;
-	-webkit-border-radius:5px;
-	cursor:pointer;
-		text-decoration: none;
-}
+	#poser-container {
+		border: solid 1px #ccc;
+		margin-top: 10px;
+		width: 600px;
+		height: 600px;
+	}
+	
+	#controlpanel {
+		position: absolute;
+		top: 0;
+		left: 600px;
+		height: 600px;
+		width: 240px;
+		background-color: lightgray;
+		border: solid 1px #ccc;
+		padding: 20px 5px;
+	}
+		#controlpanel select {
+			margin-left: 10px;
+		}
+		
+		#controlpanel input[type='number'], #controlpanel input[type='color'] {
+			position: absolute;
+			right: 70px;
+			width: 60px;
+			margin-top: -2px;
+		}
+	
+		#downloadCtl {
+			margin: 30px 0 10px;
+		}
+		
+			#saveToLibraryMsg {
+				height: 25px;
+			}
+		
+		#saveCtl {
+			width: 180px;
+		}
+		
+		#exportCtl {
+			margin-top: 20px;
+		}
+		
+		.poser-export {
+			-webkit-box-shadow: rgba(0,0,0,0.0.1) 0 1px 0 0;
+			-moz-box-shadow: rgba(0,0,0,0.0.1) 0 1px 0 0;
+			box-shadow: rgba(0,0,0,0.0.1) 0 1px 0 0;
+			background-color: #5B74A8;
+			border: 1px solid #29447E;
+			font-family: 'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+			font-size: 14px;
+			font-weight: 700;
+			padding: 4px 6px;
+			margin-right: 5px;
+			height: 28px;
+			color: #fff;
+			border-radius: 5px;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+			cursor: pointer;
+			text-decoration: none;
+		}
 
-.poser-export:hover, poser-export:focus{
-		color: gold !important;
-		text-decoration: none !important;
-}
+		.poser-export:hover, poser-export:focus {
+			color: gold !important;
+			text-decoration: none !important;
+		}
 
-#downloadImage{
-		position: relative;
-		top: -40px;
-		left: 220px;
-}
+		/* #downloadImage{
+				position: relative;
+				top: -40px;
+				left: 220px;
+		}
 
-#saveToLibrary{
-		position: relative;
-		top: -40px;
-		left: 120px;
-}
-
-#saveImageDiv {
-		margin-bottom: 20px;
-}
+		#saveToLibrary{
+				position: relative;
+				top: -40px;
+				left: 120px;
+		} */
 
 #guide-controls {
 	width: 800px;
@@ -96,8 +137,10 @@ body {
 
 /* Set the fixed height of the footer here */
 #footer {
-	margin-top: -40px;
+	position: fixed;
+	bottom: 0;
 	height: 60px;
+	width: 100%;
 	background: #f5f5f5 url('/images/tfl-logo.png') no-repeat center; 
 }
 
