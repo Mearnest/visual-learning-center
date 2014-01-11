@@ -3,7 +3,7 @@ html(lang="en")
 	head
 		meta(charset="utf-8")
 		meta(http-equiv="X-UA-Compatible', content='IE=edge, chrome=1")
-		meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
 		meta(name="apple-mobile-web-app-capable", content="yes")
 		link(rel="icon", type="image/png", href="/images/favicon.png")
 		
@@ -16,6 +16,7 @@ html(lang="en")
 		script(src='http://code.jquery.com/jquery.min.js')
 		script(src="/javascripts/bootstrap.min.js")
 		
+		//- Set the current navigation path
 		script.
 			$(function () {
 				setActivePath();
@@ -35,39 +36,41 @@ html(lang="en")
 				});
 			}
 		
+		//- Add additional links, scripts or tags to the head
 		block head
 		
 	body
 		div#wrap
-			div(class="navbar navbar-inverse navbar-fixed-top", role="navigation")
-				div.container
-					div.navbar-header
-						button(type="button", class="navbar-toggle", data-toggle="collapse", data-target=".navbar-collapse")
-							span.sr-only Toggle navigation
-							span.icon-bar
-							span.icon-bar
-							span.icon-bar
-							span.icon-bar
-						a(class="navbar-brand", href="/") Visual Learning Center
-				
-					div(class="collapse navbar-collapse")
-						ul(class="nav navbar-nav")
-							li
-								a(href="/") Home 
-							li
-								a(href="/guide") Guide
-							li
-								a(href="/library") Library
-							li
-								a(href="/editor") Editor
-							li
-								a(href="/forum") Forum
-							li
-								a(href="/database") Database
-							li
-								a(href="/about") About
-							li
-								a(href="/contact") Contact
+			block nav
+				div(class="navbar navbar-inverse navbar-fixed-top", role="navigation")
+					div.container
+						div.navbar-header
+							button(type="button", class="navbar-toggle", data-toggle="collapse", data-target=".navbar-collapse")
+								span.sr-only Toggle navigation
+								span.icon-bar
+								span.icon-bar
+								span.icon-bar
+								span.icon-bar
+							a(class="navbar-brand", href="/") Visual Learning Center
+					
+						div(class="collapse navbar-collapse")
+							ul(class="nav navbar-nav")
+								li
+									a(href="/") Home 
+								li
+									a(href="/guide") Guide
+								li
+									a(href="/library") Library
+								li
+									a(href="/editor") Editor
+								li
+									a(href="/forum") Forum
+								li
+									a(href="/database") Database
+								li
+									a(href="/about") About
+								li
+									a(href="/contact") Contact
 		
 			block content
 				div.container
